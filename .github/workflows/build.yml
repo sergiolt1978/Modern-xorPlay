@@ -1,0 +1,46 @@
+name: Build XorPlay-Modern
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: devkitpro/devkita64:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          if [ -f fetch-deps.sh ]; then
+            chmod +x fetch-deps.sh
+            ./fetch-deps.sh
+          fi
+
+      - name: Compile project
+        run: make
+
+      - name: Prepare release files
+        run: |
+          mkdir -p out/atmosphere/contents/00FF0000A0F1A001/flags
+          mkdir -p out/switch
+          mkdir -p out/config/xorplay
+          mkdir -p out/music
+
+          cp sysmodule/*.nsp out/atmosphere/contents/00FF0000A0F1A001/exefs.nsp || true
+          touch out/atmosphere/contents/00FF0000A0F1A001/flags/boot2.flag
+          cp control/*.nro out/switch/ || true
+          cp -r config/* out/config/xorplay/ || true
+          cp -r music/* out/music/ || true
+
+      - name: Upload compiled artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: XorPlay-Modern-Compiled
+          path: out/
+          
