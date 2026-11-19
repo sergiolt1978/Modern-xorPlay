@@ -1,1 +1,5 @@
-
+# Put your default music files here.
+# Relative paths are relative to this directory.
+# Example:
+# track1.mp3
+# track2.ogg
