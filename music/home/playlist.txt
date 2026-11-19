@@ -1,1 +1,3 @@
-
+# Music used when no application is in the foreground.
+# Example:
+# home.mp3
