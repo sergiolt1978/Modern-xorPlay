@@ -22,14 +22,28 @@ jobs:
             ./fetch-deps.sh
           fi
 
-      - name: Compile project
+      - name: Compile sysmodule and control
         run: |
-          mkdir -p dist/switch
-          make
+          make -C sysmodule
+          make -C control
+
+      - name: Package files
+        run: |
+          mkdir -p salida/atmosphere/contents/00FF0000A0F1A001/flags
+          mkdir -p salida/switch
+          mkdir -p salida/config/xorplay
+          mkdir -p salida/music
+
+          cp sysmodule/*.nsp salida/atmosphere/contents/00FF0000A0F1A001/exefs.nsp
+          touch salida/atmosphere/contents/00FF0000A0F1A001/flags/boot2.flag
+          cp control/*.nro salida/switch/
+          cp -r config/* salida/config/xorplay/ || true
+          cp -r music/* salida/music/ || true
 
       - name: Upload compiled artifacts
         uses: actions/upload-artifact@v4
         with:
           name: XorPlay-Modern-Compiled
-          path: dist/
+          path: salida/
+          
           
