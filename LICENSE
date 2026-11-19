@@ -1,0 +1,9 @@
+XorPlay Modern
+Copyright (C) 2026
+
+This project is released under the GNU General Public License version 3 or later.
+
+Third-party libraries retain their respective licenses:
+- dr_mp3: public domain / MIT-0
+- dr_wav: public domain / MIT-0
+- stb_vorbis: public domain / MIT
